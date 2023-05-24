@@ -10,7 +10,7 @@ const initialState = {
   numberOfPlayers: 0,
   title: '',
   maker: '',
-  gameTypeId: 0,
+  gameType: 0,
 };
 
 const GameForm = ({ user }) => {
@@ -46,11 +46,12 @@ const GameForm = ({ user }) => {
       title: currentGame.title,
       numberOfPlayers: Number(currentGame.numberOfPlayers),
       skillLevel: Number(currentGame.skillLevel),
-      gameType: Number(currentGame.gameTypeId),
+      gameType: Number(currentGame.gameType),
       userId: user.uid,
     };
 
     // Send POST request to your API
+    console.warn(game);
     createGame(game).then(() => router.push('/games'));
   };
 
@@ -73,7 +74,7 @@ const GameForm = ({ user }) => {
           <Form.Label>Skill Level</Form.Label>
           <Form.Control name="skillLevel" type="number" required value={currentGame.skillLevel} onChange={handleChange} />
         </Form.Group>
-        <FloatingLabel controlId="floatingSelect" label="gametype">
+        <FloatingLabel controlId="floatingSelect" label="Game Type">
           <Form.Select
             placeholder="Select Game Type:"
             aria-label="Game Type"
@@ -83,7 +84,7 @@ const GameForm = ({ user }) => {
             value={currentGame.gameType}
             required
           >
-            <option value="">Select Game Type</option>
+            <option value="">Select</option>
             {gameTypes.map((gameType) => (
               <option
                 key={gameType.id}

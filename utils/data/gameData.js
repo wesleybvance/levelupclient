@@ -10,9 +10,9 @@ const getGames = () => new Promise((resolve, reject) => {
 const createGame = (game) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/games`, {
     method: 'POST',
-    body: JSON.stringify({
-      game,
-    }),
+    body: JSON.stringify(
+      game
+    ),
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
