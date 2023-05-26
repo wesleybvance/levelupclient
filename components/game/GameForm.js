@@ -59,20 +59,40 @@ const GameForm = ({ user }) => {
     <>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control name="title" type="text" required value={currentGame.title} onChange={handleChange} />
+          <FloatingLabel
+            controlId="floatingInput1"
+            label="Title"
+            className="mb-3"
+          >
+            <Form.Control name="title" type="text" required value={currentGame.title} onChange={handleChange} />
+          </FloatingLabel>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Maker</Form.Label>
-          <Form.Control name="maker" type="text" required value={currentGame.maker} onChange={handleChange} />
+          <FloatingLabel
+            controlId="floatingInput1"
+            label="Maker"
+            className="mb-3"
+          >
+            <Form.Control name="maker" type="text" required value={currentGame.maker} onChange={handleChange} />
+          </FloatingLabel>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Number of Players</Form.Label>
-          <Form.Control name="numberOfPlayers" type="number" required value={currentGame.numberOfPlayers} onChange={handleChange} />
+          <FloatingLabel
+            controlId="floatingInput1"
+            label="Number Of Players"
+            className="mb-3"
+          >
+            <Form.Control name="numberOfPlayers" type="number" required value={currentGame.numberOfPlayers} onChange={handleChange} />
+          </FloatingLabel>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Skill Level</Form.Label>
-          <Form.Control name="skillLevel" type="number" required value={currentGame.skillLevel} onChange={handleChange} />
+          <FloatingLabel
+            controlId="floatingInput1"
+            label="Skill Level"
+            className="mb-3"
+          >
+            <Form.Control name="skillLevel" type="number" required value={currentGame.skillLevel} onChange={handleChange} />
+          </FloatingLabel>
         </Form.Group>
         <FloatingLabel controlId="floatingSelect" label="Game Type">
           <Form.Select
