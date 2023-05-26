@@ -7,7 +7,7 @@ import { createEvent } from '../../utils/data/eventData';
 import { getGames } from '../../utils/data/gameData';
 
 const initialState = {
-  game: 0,
+  gameId: 0,
   description: '',
   date: '',
   time: '',
@@ -45,7 +45,7 @@ const EventForm = ({ user }) => {
       description: currentEvent.description,
       time: currentEvent.time,
       date: currentEvent.date,
-      game: Number(currentEvent.game),
+      gameId: Number(currentEvent.gameId),
       userId: user.uid,
     };
 
@@ -94,10 +94,10 @@ const EventForm = ({ user }) => {
           <Form.Select
             placeholder="Select Game:"
             aria-label="Game"
-            name="game"
+            name="gameId"
             onChange={handleChange}
             className="mb-3"
-            value={currentEvent.game}
+            value={currentEvent.gameId}
             required
           >
             <option value="">Select</option>
@@ -106,7 +106,7 @@ const EventForm = ({ user }) => {
                 key={game.id}
                 value={game.id}
               >
-                {game.label}
+                {game.title}
               </option>
             ))}
           </Form.Select>
