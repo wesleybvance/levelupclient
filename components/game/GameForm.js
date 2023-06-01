@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { createGame, getGameTypes } from '../../utils/data/gameData';
+import { createGame, getGameTypes, updateGame } from '../../utils/data/gameData';
 
 const initialState = {
+  id: 0,
   skillLevel: 1,
   numberOfPlayers: 0,
   title: '',
@@ -13,7 +14,7 @@ const initialState = {
   gameType: 0,
 };
 
-const GameForm = ({ user }) => {
+const GameForm = ({ user, obj }) => {
   const [gameTypes, setGameTypes] = useState([]);
   /*
   Since the input fields are bound to the values of
@@ -26,7 +27,18 @@ const GameForm = ({ user }) => {
   useEffect(() => {
     // TODO: Get the game types, then set the state
     getGameTypes().then((data) => setGameTypes(data));
-  }, []);
+    if (obj.id) {
+      setCurrentGame({
+        id: obj.id,
+        gameType: obj.game_type?.id,
+        skillLevel: obj.skill_level,
+        numberOfPlayers: obj.number_of_players,
+        maker: obj.maker,
+        title: obj.title,
+        userId: user.uid,
+      });
+    }
+  }, [obj, user]);
 
   const handleChange = (e) => {
     // TODO: Complete the onChange function
@@ -40,19 +52,29 @@ const GameForm = ({ user }) => {
   const handleSubmit = (e) => {
     // Prevent form from being submitted
     e.preventDefault();
-
-    const game = {
-      maker: currentGame.maker,
-      title: currentGame.title,
-      numberOfPlayers: Number(currentGame.numberOfPlayers),
-      skillLevel: Number(currentGame.skillLevel),
-      gameType: Number(currentGame.gameType),
-      userId: user.uid,
-    };
-
-    // Send POST request to your API
-    console.warn(game);
-    createGame(game).then(() => router.push('/games'));
+    if (obj.id) {
+      const putGame = {
+        id: obj.id,
+        maker: currentGame.maker,
+        title: currentGame.title,
+        numberOfPlayers: Number(currentGame.numberOfPlayers),
+        skillLevel: Number(currentGame.skillLevel),
+        gameType: Number(currentGame.gameType),
+        userId: user.uid,
+      };
+      updateGame(putGame).then(() => router.replace('/games'));
+    } else {
+      const game = {
+        maker: currentGame.maker,
+        title: currentGame.title,
+        numberOfPlayers: Number(currentGame.numberOfPlayers),
+        skillLevel: Number(currentGame.skillLevel),
+        gameType: Number(currentGame.gameType),
+        userId: user.uid,
+      };
+      // Send POST request to your API
+      createGame(game).then(() => router.replace('/games'));
+    }
   };
 
   return (
@@ -108,7 +130,7 @@ const GameForm = ({ user }) => {
             {gameTypes.map((gameType) => (
               <option
                 key={gameType.id}
-                value={gameType.id}
+                value={gameType?.id}
               >
                 {gameType.label}
               </option>
@@ -129,6 +151,20 @@ GameForm.propTypes = {
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
   }).isRequired,
+  obj: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    maker: PropTypes.string,
+    number_of_players: PropTypes.number,
+    skill_level: PropTypes.number,
+    game_type: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }),
+};
+
+GameForm.defaultProps = {
+  obj: initialState,
 };
 
 export default GameForm;

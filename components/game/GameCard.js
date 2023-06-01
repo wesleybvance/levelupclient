@@ -1,28 +1,62 @@
+/* eslint-disable no-unused-vars */
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 
-const GameCard = ({
+export default function GameCard({
+  id,
   title, //
   maker,
   numberOfPlayers,
   skillLevel,
-}) => (
-  <Card className="text-center">
-    <Card.Header>{title}</Card.Header>
-    <Card.Body>
-      <Card.Title>By: {maker}</Card.Title>
-      <Card.Text>{numberOfPlayers} players needed</Card.Text>
-    </Card.Body>
-    <Card.Footer className="text-muted">Skill Level: {skillLevel}</Card.Footer>
-  </Card>
-);
+}) {
+  const router = useRouter();
+  return (
+    <Card className="text-center">
+      <Card.Header>{title}</Card.Header>
+      <Card.Body>
+        <Card.Title>By: {maker}</Card.Title>
+        <Card.Text>{numberOfPlayers} players needed</Card.Text>
+      </Card.Body>
+      <Button className="edit-game" variant="black" onClick={(e) => router.replace(`/games/edit/${id}`)}>Update Game</Button>
+      <Card.Footer className="text-muted">Skill Level: {skillLevel}</Card.Footer>
+    </Card>
+  );
+}
 
 GameCard.propTypes = {
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   maker: PropTypes.string.isRequired,
   numberOfPlayers: PropTypes.number.isRequired,
   skillLevel: PropTypes.number.isRequired,
 };
 
-export default GameCard;
+// const GameCard = ({
+//   id,
+//   title, //
+//   maker,
+//   numberOfPlayers,
+//   skillLevel,
+// }) => (
+//   <Card className="text-center">
+//     <Card.Header>{title}</Card.Header>
+//     <Card.Body>
+//       <Card.Title>By: {maker}</Card.Title>
+//       <Card.Text>{numberOfPlayers} players needed</Card.Text>
+//     </Card.Body>
+//     <Button className="edit-game" variant="black" onClick={(e) => router.replace(`/games/${id}`)}>Update Game</Button>
+//     <Card.Footer className="text-muted">Skill Level: {skillLevel}</Card.Footer>
+//   </Card>
+// );
+
+// GameCard.propTypes = {
+//   id: PropTypes.number.isRequired,
+//   title: PropTypes.string.isRequired,
+//   maker: PropTypes.string.isRequired,
+//   numberOfPlayers: PropTypes.number.isRequired,
+//   skillLevel: PropTypes.number.isRequired,
+// };
+
+// export default GameCard;
