@@ -59,7 +59,7 @@ const EventForm = ({ user, obj }) => {
         time: currentEvent.time,
         date: currentEvent.date,
         gameId: Number(currentEvent.gameId),
-        gamerId: user.uid,
+        userId: user.uid,
       };
       updateEvent(putEvent).then(() => router.replace('/events'));
     } else {
@@ -68,7 +68,7 @@ const EventForm = ({ user, obj }) => {
         time: currentEvent.time,
         date: currentEvent.date,
         gameId: Number(currentEvent.gameId),
-        gamerId: user.uid,
+        userId: user.uid,
       };
 
       // Send POST request to your API
