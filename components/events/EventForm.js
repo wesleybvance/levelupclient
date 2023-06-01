@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { createEvent } from '../../utils/data/eventData';
+import { createEvent, updateEvent } from '../../utils/data/eventData';
 import { getGames } from '../../utils/data/gameData';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   time: '',
 };
 
-const EventForm = ({ user }) => {
+const EventForm = ({ user, obj }) => {
   const [games, setGames] = useState([]);
   /*
   Since the input fields are bound to the values of
@@ -26,7 +26,19 @@ const EventForm = ({ user }) => {
   useEffect(() => {
     // TODO: Get the games, then set the state
     getGames().then((data) => setGames(data));
-  }, []);
+    if (obj.id) {
+      console.warn(obj);
+      setCurrentEvent({
+        id: obj.id,
+        title: obj.title,
+        gameId: obj.game?.id,
+        date: obj.date,
+        time: obj.time,
+        description: obj.description,
+        userId: user.uid,
+      });
+    }
+  }, [obj, user]);
 
   const handleChange = (e) => {
     // TODO: Complete the onChange function
@@ -40,18 +52,29 @@ const EventForm = ({ user }) => {
   const handleSubmit = (e) => {
     // Prevent form from being submitted
     e.preventDefault();
+    if (obj.id) {
+      const putEvent = {
+        id: obj.id,
+        description: currentEvent.description,
+        time: currentEvent.time,
+        date: currentEvent.date,
+        gameId: Number(currentEvent.gameId),
+        gamerId: user.uid,
+      };
+      updateEvent(putEvent).then(() => router.replace('/events'));
+    } else {
+      const event = {
+        description: currentEvent.description,
+        time: currentEvent.time,
+        date: currentEvent.date,
+        gameId: Number(currentEvent.gameId),
+        gamerId: user.uid,
+      };
 
-    const event = {
-      description: currentEvent.description,
-      time: currentEvent.time,
-      date: currentEvent.date,
-      gameId: Number(currentEvent.gameId),
-      userId: user.uid,
-    };
-
-    // Send POST request to your API
-    console.warn(event);
-    createEvent(event).then(() => router.push('/events'));
+      // Send POST request to your API
+      console.warn(event);
+      createEvent(event).then(() => router.push('/events'));
+    }
   };
 
   return (
@@ -125,6 +148,20 @@ EventForm.propTypes = {
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
   }).isRequired,
+  obj: PropTypes.shape({
+    game: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+    id: PropTypes.number,
+    description: PropTypes.string,
+    title: PropTypes.string,
+    date: PropTypes.string,
+    time: PropTypes.string,
+  }),
+};
+
+EventForm.defaultProps = {
+  obj: initialState,
 };
 
 export default EventForm;
