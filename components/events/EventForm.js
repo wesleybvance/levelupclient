@@ -35,7 +35,7 @@ const EventForm = ({ user, obj }) => {
         date: obj.date,
         time: obj.time,
         description: obj.description,
-        userId: user.uid,
+        gamerId: user.uid,
       });
     }
   }, [obj, user]);
@@ -59,7 +59,7 @@ const EventForm = ({ user, obj }) => {
         time: currentEvent.time,
         date: currentEvent.date,
         gameId: Number(currentEvent.gameId),
-        userId: user.uid,
+        gamerId: user.uid,
       };
       updateEvent(putEvent).then(() => router.replace('/events'));
     } else {
@@ -68,7 +68,7 @@ const EventForm = ({ user, obj }) => {
         time: currentEvent.time,
         date: currentEvent.date,
         gameId: Number(currentEvent.gameId),
-        userId: user.uid,
+        gamerId: user.uid,
       };
 
       // Send POST request to your API
