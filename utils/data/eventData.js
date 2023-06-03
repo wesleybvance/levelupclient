@@ -1,7 +1,13 @@
 import { clientCredentials } from '../client';
 
-const getEvents = () => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/events`)
+const getEvents = (uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${uid}`,
+    },
+  })
     .then((response) => response.json())
     .then(resolve)
     .catch(reject);
@@ -55,7 +61,32 @@ const deleteEvent = (eventId) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const leaveEvent = (uid, eventId) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/leave`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${uid}`,
+    },
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+const joinEvent = (uid, eventId) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/signup`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${uid}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getEvents, createEvent, updateEvent, getSingleEvent, deleteEvent,
+  getEvents, createEvent, updateEvent, getSingleEvent, deleteEvent, leaveEvent, joinEvent,
 };
